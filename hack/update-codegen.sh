@@ -37,7 +37,7 @@ KNATIVE_CODEGEN_PKG=${KNATIVE_CODEGEN_PKG:-$(cd ${REPO_ROOT_DIR}; ls -d -1 ./ven
 #                  instead of the $GOPATH directly. For normal projects this can be dropped.
 ${CODEGEN_PKG}/generate-groups.sh "deepcopy,client,informer,lister" \
   github.com/GoogleCloudPlatform/cloud-run-events/pkg/client github.com/GoogleCloudPlatform/cloud-run-events/pkg/apis \
-  "pubsub:v1alpha1 messaging:v1alpha1" \
+  "pubsub:v1alpha1 messaging:v1alpha1 events:v1alpha1" \
   --go-header-file ${REPO_ROOT_DIR}/hack/boilerplate/boilerplate.go.txt
 
 # HACK HACK HACK
@@ -50,15 +50,16 @@ fi
 # Knative Injection
 ${KNATIVE_CODEGEN_PKG}/hack/generate-knative.sh "injection" \
   github.com/GoogleCloudPlatform/cloud-run-events/pkg/client github.com/GoogleCloudPlatform/cloud-run-events/pkg/apis \
-  "pubsub:v1alpha1 messaging:v1alpha1" \
+  "pubsub:v1alpha1 messaging:v1alpha1 events:v1alpha1" \
   --go-header-file ${REPO_ROOT_DIR}/hack/boilerplate/boilerplate.go.txt
 
 # Because the kubernetes code generators force pacakges to lowercase, the update-deps script will be confused for
-# imports of github.com/googlecloudplatform/... We will update that to use the correct casing in the generated code.
+# imports of github.com/GoogleCloudPlatform/... We will update that to use the correct casing in the generated code.
 # The following will find all files (not directories, specified by -type f) under ${REPO_ROOT_DIR}/pkg/client, and
-# perform a sed command to replace "googlecloudplatform" with "GoogleCloudPlatform" on each file it finds.
+# perform a sed command to replace "GoogleCloudPlatform" with "GoogleCloudPlatform" on each file it finds.
 
 find ${REPO_ROOT_DIR}/pkg/client -type f -exec $sed -i 's/googlecloudplatform/GoogleCloudPlatform/g' {} \;
 
 # Make sure our dependencies are up-to-date
+echo "updating deps"
 ${REPO_ROOT_DIR}/hack/update-deps.sh
