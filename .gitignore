@@ -10,3 +10,6 @@ tmp/
 # Temporary output of build tools
 bazel-*
 *.out
+
+# emacs files
+*~
