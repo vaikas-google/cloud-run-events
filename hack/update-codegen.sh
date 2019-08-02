@@ -51,7 +51,7 @@ ${KNATIVE_CODEGEN_PKG}/hack/generate-knative.sh "injection" \
 # The following will find all files (not directories, specified by -type f) under ${REPO_ROOT_DIR}/pkg/client, and
 # perform a sed command to replace "GoogleCloudPlatform" with "GoogleCloudPlatform" on each file it finds.
 
-find ${REPO_ROOT_DIR}/pkg/client -type f -exec $sed -i 's@googlecloudplatform@GoogleCloudPlatform@g' {} \;
+find ${REPO_ROOT_DIR}/pkg/client -type f -exec $sed -i 's/googlecloudplatform/GoogleCloudPlatform/g' {} \;
 
 # Make sure our dependencies are up-to-date
 echo "updating deps"
